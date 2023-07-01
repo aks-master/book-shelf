@@ -1,4 +1,10 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import { login } from "../authContext/apiCalls";
+import { register } from "../authContext/apiCalls";
+import { AuthContext } from "../authContext/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 import formImg from "../assets/undraw_Bibliophile_re_xarc.png";
 const initialState = {
   username: "",
@@ -8,7 +14,18 @@ const initialState = {
 };
 
 function Login() {
+  const { user, dispatch } = useContext(AuthContext);
   const [values, setValues] = useState(initialState);
+  const [messgae, setMessage] = useState("");
+  const navigate = useNavigate();
+  console.log(user);
+  useEffect(() => {
+    if (user) {
+      return navigate("/");
+    }
+  }, []);
+
+  console.log(dispatch);
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
@@ -18,15 +35,35 @@ function Login() {
     console.log(e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    // console.log(values);
+    if (values.isMember) {
+      //handle login
+      console.log("login");
+      console.log(values);
+      const { email, password } = values;
+      login({ email, password }, dispatch);
+      navigate("/");
+    } else {
+      //register
+      console.log("register");
+      console.log(values);
+      const { username, email, password } = values;
+      try {
+        await axios.post("http://localhost:4001/api/v1/auth/register", { email,username, password });
+        navigate("/login");
+      } catch (err) {}
+    }
   };
   return (
     <div className="container">
-      <h1 className="text-center m-5">{values.isMember ? "Login" : "Register"}</h1>
+      <h1 className="text-center m-5">
+        {values.isMember ? "Login" : "Register"}
+      </h1>
       <div className="row justify-content-center align-items-center">
         <div className="col-md-6">
+          <p className="text-danger">{messgae}</p>
           <form onSubmit={onSubmit}>
             {!values.isMember && (
               <div className="form-group">

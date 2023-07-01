@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
+import { AuthContext } from "../authContext/AuthContext";
+import { logout } from "../authContext/AuthActions";
+import { useContext } from 'react';
 function NavBar(){
+  const { user, dispatch } = useContext(AuthContext);
   return (
 
 <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -11,36 +15,20 @@ function NavBar(){
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <Link to="/dashboard" className="nav-link active" aria-current="page">Dashboard</Link>
+          <Link to="/" className="nav-link active" aria-current="page">Dashboard</Link>
         </li>
         <li className="nav-item">
           <Link to="/Bookshelf" className="nav-link">your BookShelf</Link>
         </li>
+        <li className="nav-item">
+          <Link to="/people" className="nav-link">People</Link>
+        </li>
       </ul>
-      <button className='btn btn-danger'>Logout</button>
+      <p className='m-3'>Welcome, {user.username}</p>
+      <button className='btn btn-danger' onClick={() => dispatch(logout())}>Logout</button>
     </div>
   </div>
 </nav>
-
-
-  //   <header classNameName="header">
-  //     <div classNameName="logo">Bookshelf</div>
-  //     <nav>
-  //       <ul>
-  //         <li>
-  //           <Link to='/Dashboard'>Dashboard</Link>
-  //         </li>
-  //         <li>
-  //           <Link to='/bookshelf'>your Bookeshelf</Link>
-  //         </li>
-  //         <li>
-  //           <button classNameName='btn btn-info'>
-  //             Logout
-  //           </button>
-  //         </li>
-  //       </ul>
-  //     </nav>
-  //   </header>
   );
 }
 export default NavBar;

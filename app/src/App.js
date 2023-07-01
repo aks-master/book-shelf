@@ -2,32 +2,37 @@ import "./App.css";
 
 import Dashboard from "./pages/Dashboard";
 import Bookshelf from "./pages/Bookshelf";
+import People from "./pages/people";
 import Login from "./pages/Login";
 import Error from "./pages/error";
+import notAuth from "./pages/notAuth";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./componets/Layout";
 import Landing from "./pages/Landing";
+
+import { useContext } from "react";
+import { AuthContext } from "./authContext/AuthContext";
+
 function App() {
+  const { user } = useContext(AuthContext);
   return (
     <BrowserRouter>
       <Routes>
-        {true ? (
+        {!user ? (
           <>
             <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
             <Route path="*" element={<Error />} />
           </>
         ) : (
-          <>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="Dashboard" element={<Dashboard />} />
-              <Route path="Bookshelf" element={<Bookshelf />} />
-              <Route path="*" element={<Error />} />
-            </Route>
-          </>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="/people" element={<People />} />
+            <Route path="/bookshelf" element={<Bookshelf />} />
+            <Route path="*" element={<Error />} />
+          </Route>
         )}
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
