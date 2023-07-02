@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { login } from "../authContext/apiCalls";
-import { register } from "../authContext/apiCalls";
+import { setupUser } from "../authContext/setup";
 import { AuthContext } from "../authContext/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -43,17 +42,35 @@ function Login() {
       console.log("login");
       console.log(values);
       const { email, password } = values;
-      login({ email, password }, dispatch);
-      navigate("/");
+      try {
+        const res = await axios.post(
+          "http://localhost:4001/api/v1/auth/login",
+          { email, password }
+        );
+        setupUser(res.data, dispatch);
+        navigate("/");
+      } catch (error) {
+        if(error.response.status===401){
+          setMessage(error.response.data);
+        }
+        console.log(error);
+      }
     } else {
       //register
       console.log("register");
       console.log(values);
       const { username, email, password } = values;
       try {
-        await axios.post("http://localhost:4001/api/v1/auth/register", { email,username, password });
+        const res = await axios.post(
+          "http://localhost:4001/api/v1/auth/register",
+          { email, username, password }
+        );
+        setMessage("User Created, click already a member and login");
         navigate("/login");
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+        setMessage(err.response.data);
+      }
     }
   };
   return (

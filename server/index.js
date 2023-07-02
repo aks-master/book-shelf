@@ -25,10 +25,12 @@ mongoose
   });
 
 const authRoute = require("./routes/auth");
-// const bookShelfRoute = require("./routes/bookShelf");
+const peopleRoute = require("./routes/people");
+const bookShelfRoute = require("./routes/bookShelf");
 
 app.use("/api/v1/auth", authRoute);
-// app.use("/api/v1/book", bookShelfRoute);
+app.use("/api/v1/people",peopleRoute);
+app.use("/api/v1/book", bookShelfRoute);
 
 const currentlyReading=[];
 
