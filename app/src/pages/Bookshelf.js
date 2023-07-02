@@ -8,10 +8,10 @@ function Bookshelf() {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-6">
+        <div className="col-4">
           <Booksearch />
         </div>
-        <div className="col-6">
+        <div className="col-8">
           <BookList />
         </div>
       </div>
