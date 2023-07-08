@@ -1,15 +1,17 @@
 import Container from "react-bootstrap/Container";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../authContext/AuthContext";
+import axios from "axios";
 
 function Booklist() {
-  const [books, setBooks] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const { user } = useContext(AuthContext);
   useEffect(() => {
-    console.log("booklist rendered");
-    fetch("http://localhost:4001/api/getBooksfromDB")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setBooks(data.array);
+    axios
+      .get(`http://localhost:4001/api/v1/book/getreviews?userid=${user._id}`)
+      .then((res) => {
+        // console.log(res);
+        setReviews(res.data);
       });
   }, []);
   return (
@@ -20,11 +22,14 @@ function Booklist() {
       <div id="books" className="container">
         <div className="card" style={{ width: "18rem" }}>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item">r1</li>
-            <li className="list-group-item">r2</li>
-            <li className="list-group-item">r3</li>
-            <li className="list-group-item">r4</li>
-            <li className="list-group-item">r5</li>
+            {reviews.map((review) => {
+              return (
+                <li
+                  className="list-group-item"
+                  key={review.id}
+                >{`by:${review.username}, ${review.review}, ${review.rating} Stars`}</li>
+              );
+            })}
           </ul>
         </div>
       </div>

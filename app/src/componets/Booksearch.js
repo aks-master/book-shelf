@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../authContext/AuthContext";
 
 function Booksearch() {
+  const { user } = useContext(AuthContext);
   const searchTermRef = useRef();
   const [searchTerm, setSearchTerm] = useState("");
   const [cards, setCards] = useState([]);
@@ -12,9 +14,8 @@ function Booksearch() {
     fetch("https://www.googleapis.com/books/v1/volumes?q=" + searchTerm)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        data.totalItems!==0?
-        setCards(data.items):setCards([]);
+        // console.log(data);
+        data.totalItems !== 0 ? setCards(data.items) : setCards([]);
       })
       .finally(() => {
         searchTermRef.current.value = "";
@@ -30,10 +31,32 @@ function Booksearch() {
     setSearchTerm(searchTermRef.current.value);
   }
 
-  function addBookToDB(book){
-    console.log(book);
-    axios.post("http://localhost:4001/api/addBookToDB",{book}).then();
-  };
+  function addBookToDB(book) {
+    // console.log(book);
+    const data = {
+      id: book.id,
+      title: book.volumeInfo.title,
+      img: book.volumeInfo.imageLinks?.smallThumbnail
+        ? book.volumeInfo.imageLinks?.smallThumbnail
+        : null,
+      authors: book.volumeInfo.authors
+        ? book.volumeInfo.authors.join(", ")
+        : "",
+      avgRating: book.volumeInfo.averageRating
+        ? book.volumeInfo.averageRating
+        : "0",
+      ratingsCount: book.volumeInfo.ratingsCount
+        ? book.volumeInfo.ratingsCount
+        : "0",
+    };
+    console.log(data);
+    axios
+      .post(
+        `http://localhost:4001/api/v1/book/addtobookshelf?userid=${user._id}`,
+        { data }
+      )
+      .then();
+  }
 
   return (
     <>
@@ -62,19 +85,23 @@ function Booksearch() {
       </section>
 
       <div className="container">
-        {console.log(typeof cards)}
+        {console.log(cards)}
 
         {cards.map((book) => {
           return (
             // error when using react bootstrap, hence using normal bootstrap components
-            <div className="row my-3" key={book.accessInfo.id}>
+            <div className="row my-3" key={book.id}>
               <div className="col-sm-6">
                 <div className="book" style={{ width: "18rem" }}>
                   <img
                     className="book-img-top"
                     // smallThumbnail not loading.
                     // here optional chaining is used as some books does not have imageLinks
-                    src={book.volumeInfo.imageLinks?.thumbnail?book.volumeInfo.imageLinks?.thumbnail:"../../public/favicon.ico"}
+                    src={
+                      book.volumeInfo.imageLinks?.thumbnail
+                        ? book.volumeInfo.imageLinks?.thumbnail
+                        : "../../public/favicon.ico"
+                    }
                     alt=""
                   />
                   <div className="book-body">
@@ -83,9 +110,16 @@ function Booksearch() {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-6"><button className="btn btn-success"onClick={()=>{
-                addBookToDB(book);
-              }}>Add to your books</button></div>
+              <div className="col-sm-6">
+                <button
+                  className="btn btn-success"
+                  onClick={() => {
+                    addBookToDB(book);
+                  }}
+                >
+                  Add to your books
+                </button>
+              </div>
             </div>
           );
         })}

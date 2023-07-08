@@ -12,7 +12,7 @@ function Dashboard() {
   return (
     <Container>
       <Row>
-        <Col sm={6}>
+        <Col sm={8}>
           <ReadingList />
         </Col>
         <Col>
