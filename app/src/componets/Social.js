@@ -1,4 +1,3 @@
-import Container from "react-bootstrap/Container";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../authContext/AuthContext";
 import axios from "axios";
@@ -15,7 +14,7 @@ function Booklist() {
       });
   }, []);
   return (
-    <Container className="my-2">
+    <div className="container my-2">
       <section className="w-100 p-4 pb-4 d-flex justify-content-center align-items-center flex-column">
         <h3>Social: book reviews from your friends</h3>
       </section>
@@ -47,7 +46,7 @@ function Booklist() {
           </ul>
         </div>
       </div>
-    </Container>
+    </div>
   );
 }
 

@@ -1,4 +1,3 @@
-import Container from "react-bootstrap/Container";
 import { useEffect, useState, useContext, useRef } from "react";
 import "./booklist.css";
 import ico from "../assets/favicon.ico";
@@ -36,15 +35,15 @@ function Booklist() {
       });
   };
 
-  const saveReview = (bookid,bookname) => {
+  const saveReview = (bookid, bookname) => {
     // event.preventDefault();
     // console.log(bookid,bookname, rating, review);
     axios
       .post(`http://localhost:4001/api/v1/book/addreview`, {
         userid: user._id,
-        username:user.username,
+        username: user.username,
         bookid: bookid,
-        bookname:bookname,
+        bookname: bookname,
         review: review ? review : "",
         rating: rating ? rating : 0,
       })
@@ -61,7 +60,7 @@ function Booklist() {
   };
 
   return (
-    <Container className="my-2">
+    <div className="container my-2">
       <div className="d-flex justify-content-center align-items-center">
         <h2 className="text-center">Your Book Shelf</h2>
         <span onClick={refresh} className="mx-3">
@@ -103,7 +102,7 @@ function Booklist() {
                     <p>BY: {book.authors}</p>
                     <p>
                       AVG. RATINGS:{" "}
-                      {book.avgRating ? book.avgRating: "not rated"}
+                      {book.avgRating ? book.avgRating : "not rated"}
                     </p>
                   </div>
                 </div>
@@ -127,7 +126,7 @@ function Booklist() {
                   )}
                 </div>
                 <div className="row my-2">
-                <div className="d-flex">
+                  <div className="d-flex">
                     {`your rating:${book.rating}, your review:${book.review}`}
                   </div>
                   <label htmlFor="rating">Your rating</label>
@@ -157,7 +156,7 @@ function Booklist() {
                   <button
                     className="btn btn-primary my-2"
                     onClick={() => {
-                      saveReview(book.id,book.title);
+                      saveReview(book.id, book.title);
                     }}
                   >
                     save
@@ -168,7 +167,7 @@ function Booklist() {
           );
         })}
       </div>
-    </Container>
+    </div>
   );
 }
 
