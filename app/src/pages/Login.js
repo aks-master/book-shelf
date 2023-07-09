@@ -44,7 +44,7 @@ function Login() {
       const { email, password } = values;
       try {
         const res = await axios.post(
-          "http://localhost:4001/api/v1/auth/login",
+          "http://13.126.127.106:80/api/v1/auth/login",
           { email, password }
         );
         setupUser(res.data, dispatch);
@@ -62,7 +62,7 @@ function Login() {
       const { username, email, password } = values;
       try {
         const res = await axios.post(
-          "http://localhost:4001/api/v1/auth/register",
+          "http://13.126.127.106:80/api/v1/auth/register",
           { email, username, password }
         );
         setMessage("User Created, click already a member and login");

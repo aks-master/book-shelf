@@ -11,7 +11,7 @@ function People() {
   useEffect(() => {
     const fetchdata = async () => {
       axios
-        .get("http://localhost:4001/api/v1/people/getAllUsers")
+        .get("http://13.126.127.106:80/api/v1/people/getAllUsers")
         .then((res1) => {
           //dont show the logged in user.
           let data = res1.data.filter((x) => {
@@ -22,7 +22,7 @@ function People() {
         });
       axios
         .get(
-          `http://localhost:4001/api/v1/people/getfriends?userid=${user._id}`
+          `http://13.126.127.106:80/api/v1/people/getfriends?userid=${user._id}`
         )
         .then((res2) => {
           setFriends(res2.data);
@@ -42,7 +42,7 @@ function People() {
   const addfriend = async (friendid) => {
     axios
       .post(
-        `http://localhost:4001/api/v1/people/addfriend?userid=${user._id}&friendid=${friendid}`
+        `http://13.126.127.106:80/api/v1/people/addfriend?userid=${user._id}&friendid=${friendid}`
       )
       .then((res3) => {
         // console.log(res3);

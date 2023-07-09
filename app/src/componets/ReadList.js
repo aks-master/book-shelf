@@ -9,7 +9,7 @@ function Booklist() {
   useEffect(() => {
     // console.log("cr rendered");
     axios
-      .get(`http://localhost:4001/api/v1/book/getcr?userid=${user._id}`)
+      .get(`http://13.126.127.106:80/api/v1/book/getcr?userid=${user._id}`)
       .then((res) => {
         // console.log(res);
         setBooks(res.data);
@@ -20,7 +20,7 @@ function Booklist() {
     // console.log(bookid, progress);
     axios
       .post(
-        `http://localhost:4001/api/v1/book/updateprogress?userid=${user._id}&bookid=${bookid}&progress=${progress}`
+        `http://13.126.127.106:80/api/v1/book/updateprogress?userid=${user._id}&bookid=${bookid}&progress=${progress}`
       )
       .then((res) => {
         // console.log(res.data);
@@ -33,7 +33,7 @@ function Booklist() {
     // console.log(bookid);
     axios
       .delete(
-        `http://localhost:4001/api/v1/book/deletefrombookshelf?userid=${user._id}&bookid=${bookid}`
+        `http://13.126.127.106:80/api/v1/book/deletefrombookshelf?userid=${user._id}&bookid=${bookid}`
       )
       .then((res) => {
         // console.log(res.data);

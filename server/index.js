@@ -38,6 +38,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './static', 'index.html'));
 });
 
-app.listen(4001,()=>{
-    console.log("server running on 4001");
+app.listen(80,()=>{
+    console.log("server running on 80");
 })

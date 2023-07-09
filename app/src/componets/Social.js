@@ -7,7 +7,7 @@ function Booklist() {
   const { user } = useContext(AuthContext);
   useEffect(() => {
     axios
-      .get(`http://localhost:4001/api/v1/book/getreviews?userid=${user._id}`)
+      .get(`http://13.126.127.106:80/api/v1/book/getreviews?userid=${user._id}`)
       .then((res) => {
         // console.log(res);
         setReviews(res.data);

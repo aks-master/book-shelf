@@ -13,7 +13,8 @@ function Booklist() {
 
   useEffect(() => {
     // console.log("bookshelf list rendered");
-    fetch(`http://localhost:4001/api/v1/book/getbookshelf?userid=${user._id}`)
+    
+    fetch(`http://13.126.127.106:80/api/v1/book/getbookshelf?userid=${user._id}`)
       .then((response) => response.json())
       .then((data) => {
         // console.log("got data", data);
@@ -27,7 +28,7 @@ function Booklist() {
   const addToCr = (book) => {
     axios
       .post(
-        `http://localhost:4001/api/v1/book/addtocr?userid=${user._id}&bookid=${book.id}`
+        `http://13.126.127.106:80/api/v1/book/addtocr?userid=${user._id}&bookid=${book.id}`
       )
       .then((res) => {
         // console.log(res);
@@ -39,7 +40,7 @@ function Booklist() {
     // event.preventDefault();
     // console.log(bookid,bookname, rating, review);
     axios
-      .post(`http://localhost:4001/api/v1/book/addreview`, {
+      .post(`http://13.126.127.106:80/api/v1/book/addreview`, {
         userid: user._id,
         username: user.username,
         bookid: bookid,
