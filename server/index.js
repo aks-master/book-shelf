@@ -32,39 +32,6 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/people",peopleRoute);
 app.use("/api/v1/book", bookShelfRoute);
 
-const currentlyReading=[];
-
-const Booklist=[{
-  id: 'XtA-DwAAQBAJ',
-  title: 'Hello!',
-  img: 'http://books.google.com/books/content?id=XtA-DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-  authors: 'Dino Lingo',
-  averageRating: undefined
-},
-{
-  id: 'XtA-DwAAQBAJ',
-  title: 'Hello!',
-  img: 'http://books.google.com/books/content?id=XtA-DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-  authors: 'Dino Lingo',
-  averageRating: undefined
-}]
-// Handle POST requests to /api route
-app.post("/api/addBookToDB", (req, res) => {
-  console.log("at server");
-  console.log(req.body.book);
-  let book=req.body.book;
-  Booklist.push({id:book.id,title:book.volumeInfo.title,img:book.volumeInfo.imageLinks?.thumbnail,authors:book.volumeInfo.authors.join(",")
-    ,averageRating: book.volumeInfo.averageRating});
-  console.log(Booklist);
-  res.json({ message: "book added!" });
-//   res.end ('Hello, World!');
-});
-
-app.get('/api/getBooksfromDB',(req,res)=>{
-  res.json({
-    "array":Booklist});
-res.end();
-})
 
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {

@@ -1,6 +1,4 @@
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+
 import ReadingList from "../componets/ReadList";
 import Social from "../componets/Social.js";
 import { useEffect, useContext } from "react";
@@ -10,16 +8,16 @@ function Dashboard() {
   const { user } = useContext(AuthContext);
 
   return (
-    <Container>
-      <Row>
-        <Col sm={8}>
+    <div className="container">
+      <div className="row">
+        <div className="col-sm-8">
           <ReadingList />
-        </Col>
-        <Col>
+        </div>
+        <div className="col">
           <Social />
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 }
 

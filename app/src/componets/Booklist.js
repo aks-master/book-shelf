@@ -13,11 +13,11 @@ function Booklist() {
   const [review, setReview] = useState("");
 
   useEffect(() => {
-    console.log("bookshelf list rendered");
+    // console.log("bookshelf list rendered");
     fetch(`http://localhost:4001/api/v1/book/getbookshelf?userid=${user._id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("got data", data);
+        // console.log("got data", data);
         // const oldBooks=books;
         setBooks(data.array);
       });
@@ -31,24 +31,25 @@ function Booklist() {
         `http://localhost:4001/api/v1/book/addtocr?userid=${user._id}&bookid=${book.id}`
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setListUpdated(Math.random());
       });
   };
 
-  const saveReview = (bookid) => {
+  const saveReview = (bookid,bookname) => {
     // event.preventDefault();
-    console.log(bookid, rating, review);
+    // console.log(bookid,bookname, rating, review);
     axios
       .post(`http://localhost:4001/api/v1/book/addreview`, {
         userid: user._id,
         username:user.username,
         bookid: bookid,
+        bookname:bookname,
         review: review ? review : "",
         rating: rating ? rating : 0,
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setListUpdated(Math.random());
       });
   };
@@ -69,7 +70,7 @@ function Booklist() {
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-arrow-clockwise"
+            className="bi bi-arrow-clockwise"
             viewBox="0 0 16 16"
           >
             <path
@@ -82,7 +83,7 @@ function Booklist() {
       </div>
 
       <div id="books" className="container">
-        {console.log(typeof books)}
+        {/* {console.log(typeof books)} */}
 
         {books.map((book) => {
           return (
@@ -102,7 +103,7 @@ function Booklist() {
                     <p>BY: {book.authors}</p>
                     <p>
                       AVG. RATINGS:{" "}
-                      {book.averageRating ? book.averageRating : "not rated"}
+                      {book.avgRating ? book.avgRating: "not rated"}
                     </p>
                   </div>
                 </div>
@@ -120,7 +121,7 @@ function Booklist() {
                       Add to Currently Reading
                     </button>
                   ) : (
-                    <span class="badge badge-light text-dark">
+                    <span className="badge badge-light text-dark">
                       You are currently reading this
                     </span>
                   )}
@@ -156,7 +157,7 @@ function Booklist() {
                   <button
                     className="btn btn-primary my-2"
                     onClick={() => {
-                      saveReview(book.id);
+                      saveReview(book.id,book.title);
                     }}
                   >
                     save

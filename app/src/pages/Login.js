@@ -17,21 +17,21 @@ function Login() {
   const [values, setValues] = useState(initialState);
   const [messgae, setMessage] = useState("");
   const navigate = useNavigate();
-  console.log(user);
+  // console.log(user);
   useEffect(() => {
     if (user) {
       return navigate("/");
     }
   }, []);
 
-  console.log(dispatch);
+  // console.log(dispatch);
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const onSubmit = async (e) => {
@@ -39,8 +39,8 @@ function Login() {
     // console.log(values);
     if (values.isMember) {
       //handle login
-      console.log("login");
-      console.log(values);
+      // console.log("login");
+      // console.log(values);
       const { email, password } = values;
       try {
         const res = await axios.post(
@@ -53,12 +53,12 @@ function Login() {
         if (error.response.status === 401) {
           setMessage(error.response.data);
         }
-        console.log(error);
+        // console.log(error);
       }
     } else {
       //register
-      console.log("register");
-      console.log(values);
+      // console.log("register");
+      // console.log(values);
       const { username, email, password } = values;
       try {
         const res = await axios.post(
@@ -68,7 +68,7 @@ function Login() {
         setMessage("User Created, click already a member and login");
         navigate("/login");
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setMessage(err.response.data);
       }
     }
@@ -125,7 +125,7 @@ function Login() {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-arrow-right-circle-fill mx-2"
+                className="bi bi-arrow-right-circle-fill mx-2"
                 viewBox="0 0 16 16"
               >
                 <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />

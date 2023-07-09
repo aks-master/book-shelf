@@ -8,36 +8,36 @@ function Booklist() {
   const [progress, setProgress] = useState(Math.random());
   const { user } = useContext(AuthContext);
   useEffect(() => {
-    console.log("cr rendered");
+    // console.log("cr rendered");
     axios
       .get(`http://localhost:4001/api/v1/book/getcr?userid=${user._id}`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setBooks(res.data);
         // setListUpdated(Math.random());
       });
   }, [progress]);
   const updateProgress = (bookid, progress) => {
-    console.log(bookid, progress);
+    // console.log(bookid, progress);
     axios
       .post(
         `http://localhost:4001/api/v1/book/updateprogress?userid=${user._id}&bookid=${bookid}&progress=${progress}`
       )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setProgress(Math.random());
         // setBooks(res.data);
         // setListUpdated(Math.random());
       });
   };
   const deleteBook = (bookid) => {
-    console.log(bookid);
+    // console.log(bookid);
     axios
       .delete(
         `http://localhost:4001/api/v1/book/deletefrombookshelf?userid=${user._id}&bookid=${bookid}`
       )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setProgress(Math.random());
         // setBooks(res.data);
         // setListUpdated(Math.random());
@@ -49,7 +49,7 @@ function Booklist() {
         <h1>Currently Reading</h1>
       </section>
       <div id="books" className="container">
-        {console.log(typeof books)}
+        {/* {console.log(typeof books)} */}
 
         {books.map((book) => {
           return (

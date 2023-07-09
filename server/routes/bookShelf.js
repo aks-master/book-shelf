@@ -3,7 +3,7 @@ const User = require("../models/User");
 const Book = require("../models/Book");
 const Review = require("../models/Review");
 //getbookshelf
-console.log(Review);
+// console.log(Review);
 router.get("/getbookshelf", async (req, res) => {
   let user = await User.findById(req.query.userid);
   let booklist = [];
@@ -17,7 +17,7 @@ router.get("/getbookshelf", async (req, res) => {
   reviews = reviews.filter((obj) => {
     return obj.userid == req.query.userid;
   });
-  console.log(reviews);
+  // console.log(reviews);
   // console.log(currentlyReading);
   for (value of user.bookshelf) {
     let found = await Book.findById(value);
@@ -48,7 +48,7 @@ router.get("/getbookshelf", async (req, res) => {
     };
     booklist.push(data);
   }
-  console.log("reached get bookshelf", booklist);
+  // console.log("reached get bookshelf", booklist);
   res.json({
     array: booklist,
   });
@@ -56,8 +56,8 @@ router.get("/getbookshelf", async (req, res) => {
 
 //addtobookshelf
 router.post("/addtobookshelf", async (req, res) => {
-  console.log(req.query);
-  console.log(req.body);
+  // console.log(req.query);
+  // console.log(req.body);
   let found = await Book.findById(req.body.data.id);
   let user = await User.findById(req.query.userid);
   if (!found) {
@@ -70,17 +70,17 @@ router.post("/addtobookshelf", async (req, res) => {
       ratingsCount: req.body.data.ratingsCount,
     });
     const book = await newBook.save();
-    console.log(book);
+    // console.log(book);
   } else {
     // console.log("already in books database");
   }
   if (user.bookshelf.includes(req.body.data.id)) {
     // book already in users bookshelf
-    console.log("book already in users bookshelf");
+    // console.log("book already in users bookshelf");
   } else {
     user.bookshelf.push(req.body.data.id);
     user.save();
-    console.log("book added in users bookshelf");
+    // console.log("book added in users bookshelf");
   }
   res.send("OK");
 });
@@ -93,7 +93,7 @@ router.get("/getcr", async (req, res) => {
     currentlyReading.push(value.bookid);
     progress.push(value.progress);
   }
-  console.log(currentlyReading);
+  // console.log(currentlyReading);
   let i = 0;
   let cr = [];
   for (value of currentlyReading) {
@@ -130,7 +130,7 @@ router.post("/addtocr", async (req, res) => {
   }
 });
 router.post("/updateprogress", async (req, res) => {
-  console.log(req.query);
+  // console.log(req.query);
   let user = await User.findById(req.query.userid);
 
   //not working
@@ -153,9 +153,9 @@ router.post("/updateprogress", async (req, res) => {
     bookid: req.query.bookid,
     progress: Number.parseInt(req.query.progress),
   });
-  console.log(index);
+  // console.log(index);
 
-  console.log(user);
+  // console.log(user);
   const data = await user.save();
   res.json(`progress updated with ${data}`);
 });
@@ -175,35 +175,76 @@ router.delete("/deletefrombookshelf", async (req, res) => {
 });
 //get  reviews
 router.get("/getreviews", async (req, res) => {
-  console.log("getting reviews");
+  // console.log("getting reviews");
   let user = await User.findById(req.query.userid);
-  console.log(user);
+  // console.log(user);
   let friendsid = [];
   for (friend of user.friends) {
     friendsid.push(friend.id);
   }
   let reviews = await Review.find({});
-  console.log(reviews);
+  // console.log(reviews);
   let rev = [];
   for (review of reviews) {
     if (friendsid.includes(review.userid)) {
-      console.log("get");
+      // console.log("get");
       let data = {
         id: review._id,
         username: review.username,
+        bookname: review.bookname,
         review: review.review,
         rating: review.rating,
       };
       rev.push(data);
     }
   }
-  console.log(rev);
+  // console.log(rev);
 
   res.json(rev);
 });
-//post reviews
+
+// helper function to update average ratings of the book
+const updateAvgRating = async (bookid, rating, added, oldRating = null) => {
+  let found = await Book.findById(bookid);
+  if (added) {
+    // console.log("aaaab", found.avgRating);
+    found.avgRating =
+      (found.avgRating * found.ratingsCount + parseFloat(rating)) /
+      (found.ratingsCount + 1);
+    // console.log("aaaab", found.avgRating);
+    found.ratingsCount = found.ratingsCount + 1;
+  } else {
+    //updated
+    // console.log("cccccccaaaab", found.avgRating, typeof found.avgRating);
+    // console.log("cccccccaaaab", found.ratingsCount, typeof found.ratingsCount);
+    // console.log("cccccccaaaab", found.ratingsCount * found.avgRating);
+    // console.log("cccccccaaaab", oldRating, typeof oldRating);
+    // console.log("cccccccaaaab", rating, typeof rating, parseFloat(rating));
+    // console.log("cccccccaaaab", found.avgRating * found.ratingsCount);
+    // console.log(
+    //   "cccccccaaaab",
+    //   found.avgRating * found.ratingsCount - parseFloat(oldRating)
+    // );
+    // console.log(
+    //   "cccccccaaaab",
+    //   found.avgRating * found.ratingsCount -
+    //     parseFloat(oldRating) +
+    //     parseFloat(rating)
+    // );
+    found.avgRating =
+      (found.avgRating * found.ratingsCount -
+        parseFloat(oldRating) +
+        parseFloat(rating)) /
+      found.ratingsCount;
+    // console.log("cccccccaaaab", found.avgRating);
+  }
+
+  await found.save();
+};
+
+//post reviews (add and update)
 router.post("/addreview", async (req, res) => {
-  console.log("********", req.body, "*********");
+  // console.log("********", req.body, "*********");
 
   //check if a review alredy exist
   let found = false;
@@ -220,28 +261,39 @@ router.post("/addreview", async (req, res) => {
   }
   if (!found) {
     //new review
+    // console.log(">>>>>>>>adding review");
     const newReview = new Review({
       userid: req.body.userid,
       username: req.body.username,
       bookid: req.body.bookid,
+      bookname: req.body.bookname,
       review: req.body.review ? req.body.review : "",
       rating: req.body.rating ? req.body.rating : 0,
     });
     const review = await newReview.save();
+    await updateAvgRating(req.body.bookid, req.body.rating, (added = true));
     res.status(201);
     res.json("review added");
   } else {
     //update old review
-
-    await Review.findOneAndUpdate(
+    // console.log(">>>>>>>>updating review");
+    const ret = await Review.findOneAndUpdate(
       { userid: req.body.userid, bookid: req.body.bookid },
       {
         userid: req.body.userid,
         username: req.body.username,
         bookid: req.body.bookid,
+        bookname: req.body.bookname,
         review: req.body.review ? req.body.review : "",
         rating: req.body.rating ? req.body.rating : 0,
       }
+    );
+    // console.log("ccccccc", ret, "cccccc");
+    await updateAvgRating(
+      req.body.bookid,
+      req.body.rating,
+      (added = false),
+      (oldRating = ret.rating)
     );
     res.status(200);
     res.json("review updated");

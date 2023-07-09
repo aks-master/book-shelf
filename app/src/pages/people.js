@@ -7,7 +7,7 @@ function People() {
   const [friends, setFriends] = useState([]);
   const [friendsid, setfriendsid] = useState([]);
 
-  console.log(user);
+  // console.log(user);
   useEffect(() => {
     const fetchdata = async () => {
       axios
@@ -18,7 +18,7 @@ function People() {
             return x.email !== user.email;
           });
           setusers(data);
-          console.log(users, res1);
+          // console.log(users, res1);
         });
       axios
         .get(
@@ -26,14 +26,14 @@ function People() {
         )
         .then((res2) => {
           setFriends(res2.data);
-          console.log("pppp", res2.data, "ppp");
+          // console.log("pppp", res2.data, "ppp");
           let fid = res2.data.map((x) => {
             return x.id;
           });
           setfriendsid(fid);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     };
     fetchdata();
@@ -45,7 +45,7 @@ function People() {
         `http://localhost:4001/api/v1/people/addfriend?userid=${user._id}&friendid=${friendid}`
       )
       .then((res3) => {
-        console.log(res3);
+        // console.log(res3);
         setFriends(res3.data);
         let fid = res3.data.map((x) => {
           return x.id;
@@ -53,10 +53,10 @@ function People() {
         setfriendsid(fid);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
-  console.log("******", users, friends, "*******");
+  // console.log("******", users, friends, "*******");
   return (
     <div className="container">
       <div className="row">
@@ -68,7 +68,7 @@ function People() {
                 return (
                   <li className="list-group-item" key={user.id}>
                     {`${user.username}, ${user.email}`}
-                    {console.log(friends)}
+                    {/* {console.log(friends)} */}
                     {friendsid.includes(user.id) ? (
                       ""
                     ) : (

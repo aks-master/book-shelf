@@ -23,11 +23,25 @@ function Booklist() {
         <div className="card" style={{ width: "18rem" }}>
           <ul className="list-group list-group-flush">
             {reviews.map((review) => {
+              // console.log(review);
               return (
-                <li
-                  className="list-group-item"
-                  key={review.id}
-                >{`by:${review.username}, ${review.review}, ${review.rating} Stars`}</li>
+                <li className="list-group-item" key={review.id}>
+                  <div className="text-dark" style={{ fontSize: "1rem" }}>
+                    <p>
+                      <b>By:</b> {review.username}
+                    </p>
+                    <p>
+                      <b>Book:</b> {review.bookname}
+                    </p>
+                    <p>
+                      <b>Review</b> {review.review}
+                    </p>
+                    <p>
+                      <b>Ratings</b> {review.rating}
+                    </p>
+                  </div>
+                  {/* {`by:${review.username}, book: ${review.bookname}, ${review.review}, ${review.rating} Stars`}</li> */}
+                </li>
               );
             })}
           </ul>

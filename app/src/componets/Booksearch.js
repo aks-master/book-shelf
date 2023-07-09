@@ -7,7 +7,7 @@ function Booksearch() {
   const searchTermRef = useRef();
   const [searchTerm, setSearchTerm] = useState("");
   const [cards, setCards] = useState([]);
-  console.log("component rendered");
+  // console.log("component rendered");
 
   useEffect(() => {
     if (searchTerm === "") return; //dont make api call
@@ -49,7 +49,7 @@ function Booksearch() {
         ? book.volumeInfo.ratingsCount
         : "0",
     };
-    console.log(data);
+    // console.log(data);
     axios
       .post(
         `http://localhost:4001/api/v1/book/addtobookshelf?userid=${user._id}`,
@@ -85,7 +85,7 @@ function Booksearch() {
       </section>
 
       <div className="container">
-        {console.log(cards)}
+        {/* {console.log(cards)} */}
 
         {cards.map((book) => {
           return (

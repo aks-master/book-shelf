@@ -18,7 +18,7 @@ function Landing() {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-box-arrow-right mx-2"
+                className="bi bi-box-arrow-right mx-2"
                 viewBox="0 0 16 16"
               >
                 <path
